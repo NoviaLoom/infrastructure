@@ -1,0 +1,35 @@
+openapi: 3.0.1
+info:
+  title: Novialoom Central API
+  description: API Gateway centralisée pour les services Novialoom (B2B et B2C)
+  version: 3.7.0
+paths:
+  /b2b/{proxy+}:
+    x-amazon-apigateway-any-method:
+      parameters:
+        - name: proxy
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: {}
+      x-amazon-apigateway-integration:
+        uri: 
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NovialoomGateway-b2bLambda.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+  /b2c/{proxy+}:
+    x-amazon-apigateway-any-method:
+      parameters:
+        - name: proxy
+          in: path
+          required: true
+          schema:
+            type: string
+      responses: {}
+      x-amazon-apigateway-integration:
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${NovialoomGateway-b2cLambda.Arn}/invocations
+        httpMethod: POST
+        type: aws_proxy
+

@@ -1,0 +1,17 @@
+FROM public.ecr.aws/lambda/python:3.12
+
+# 1. Installation des dépendances système si nécessaire
+# RUN yum install -y gcc ...
+
+# 2. Copie des requirements et installation
+# On suppose que le requirements.txt est à la racine du dossier du service
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 3. Copie du code source du microservice dans le dossier attendu par Lambda
+COPY . ${LAMBDA_TASK_ROOT}
+
+# 4. Handler par défaut pour FastAPI avec Mangum
+# Assurez-vous que votre fichier principal s'appelle main.py et l'objet Mangum 'handler'
+CMD [ "main.handler" ]
+
